@@ -36,6 +36,7 @@ require __DIR__.'/../vendor/autoload.php';
 |
 */
 
+// 得到app实例 具体看require的文件
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
 /*
@@ -50,12 +51,18 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 |
 */
 
+// 调用make方法获得http处理器 $kernel
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
+// 调用$kernel的handle方法处理Laravel request 对象
 $response = $kernel->handle(
+    // 使用capture获取一个HTTP的请求对象
     $request = Illuminate\Http\Request::capture()
 );
 
+// 将response返回给客户端
 $response->send();
 
+// 触发 $terminatingCallbacks 注册的回调
+// vendor/laravel/framework/src/Illuminate/Foundation/Application.php 1016
 $kernel->terminate($request, $response);

@@ -11,6 +11,11 @@
 |
 */
 
+/**
+ * Laravel为数不多new出来的对象，也是框架的应用对象
+ *
+ * 实例化容器
+ */
 $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
@@ -26,6 +31,7 @@ $app = new Illuminate\Foundation\Application(
 |
 */
 
+// 绑定实现 （具体逻辑看容器相关的内容）
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
     App\Http\Kernel::class

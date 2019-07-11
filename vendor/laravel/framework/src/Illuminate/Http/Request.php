@@ -56,6 +56,8 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     {
         static::enableHttpMethodParameterOverride();
 
+        // Laravel 底层使用了Symfony HttpFoundation组件
+        // 该组件用一个面向对象层替换了PHP默认的全局变量以及函数
         return static::createFromBase(SymfonyRequest::createFromGlobals());
     }
 
@@ -418,12 +420,14 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      */
     public static function createFromBase(SymfonyRequest $request)
     {
+        // 在Symfony request 的基础上创建Laravel Request的实例
         if ($request instanceof static) {
             return $request;
         }
 
         $content = $request->content;
 
+        // 复制一个HTTP实例
         $newRequest = (new static)->duplicate(
             $request->query->all(), $request->request->all(), $request->attributes->all(),
             $request->cookies->all(), $request->files->all(), $request->server->all()
@@ -433,6 +437,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
         $newRequest->content = $content;
 
+        // 处理一下post json的情况
         $newRequest->request = $newRequest->getInputSource();
 
         return $newRequest;
