@@ -47,6 +47,17 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+//$app->bind(App\Http\Controllers\MovieSourceInterface::class,
+//    App\Http\Controllers\BaiDuCloudMovie::class
+//);
+
+$app->when(App\Http\Controllers\BaiDuCloudMovieService::class)
+    ->needs(App\Http\Controllers\MovieSourceInterface::class)
+    ->give(App\Http\Controllers\BaiDuCloudMovie::class);
+
+$app->when(App\Http\Controllers\CaoLiuMovieService::class)
+    ->needs(App\Http\Controllers\MovieSourceInterface::class)
+    ->give(App\Http\Controllers\CaoLiuMovie::class);
 /*
 |--------------------------------------------------------------------------
 | Return The Application
